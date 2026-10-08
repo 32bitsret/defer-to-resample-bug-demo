@@ -14,6 +14,8 @@ from the last message) runs nothing, yet the step is still counted and the
 sample hits its step limit.
 
 Select the expectation with DEMO_TARGET=stock|fixed (run_both.sh sets it).
+Set DEMO_LOG_DIR to keep the Inspect .eval log (run_both.sh writes them to
+evidence/<target>/); otherwise the log goes to pytest's temporary directory.
 """
 
 import json
@@ -159,7 +161,9 @@ async def _run_demo(tmp_path):
             trusted_model="mockllm/model",
         ),
     )
-    logs = await eval_async(task, model="mockllm/model", log_dir=str(tmp_path))
+    # Keep the Inspect log when DEMO_LOG_DIR is set; otherwise use pytest's tmp dir.
+    log_dir = os.environ.get("DEMO_LOG_DIR") or str(tmp_path)
+    logs = await eval_async(task, model="mockllm/model", log_dir=log_dir)
     sample = logs[0].samples[0]
     executed = [
         str(m.content).removeprefix("executed ")

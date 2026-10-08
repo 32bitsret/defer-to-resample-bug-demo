@@ -1,6 +1,6 @@
 # target: fixed  (requirements: requirements-fixed.txt)
-# date: 2026-10-08T12:14:51Z
-# command: DEMO_TARGET=fixed .venv-fixed/bin/python -m pytest -v -s -rA
+# date: 2026-10-08T12:28:58Z
+# command: DEMO_TARGET=fixed DEMO_LOG_DIR=evidence/fixed .venv-fixed/bin/python -m pytest -v -s -rA
 
 ============================= test session starts ==============================
 platform linux -- Python 3.12.15, pytest-8.3.3, pluggy-1.6.0 -- /workspace/defer-to-resample-bug-demo/.venv-fixed/bin/python
@@ -17,7 +17,7 @@ dtr_bug_demo_defer_to_resample_honest_40918f80 (1 sample): mockllm/model
 max_tool_output: 1048576, token_limit: 1000000, dataset: (samples)      
 ---------------------------------------------------------               
                                                                         
-[10/08/26 14:15:01] WARNING  sample=demo                  _control_solver.py:212
+[10/08/26 14:29:08] WARNING  sample=demo                  _control_solver.py:212
                              Control solver stopped due                         
                              to sample limit: Sample                            
                              limit exceeded (custom): Max                       
@@ -32,7 +32,7 @@ total time:                                   0:00:03
 noop_scorer                                                                     
 accuracy     1.000                                                              
 Log:                                                                            
-../../tmp/pytest-of-box/pytest-15/test_fixed_branch_executes_cho0/2026-10-08T12…
+evidence/fixed/2026-10-08T12-29-05-00-00_dtr-bug-demo-defer-to-resample-honest-…
 ---------------------------------------------------------                       
                                                                                 
 
@@ -56,7 +56,7 @@ _______________ test_fixed_branch_executes_chosen_resample_once ________________
 WARNING  control_arena._control_solver:_control_solver.py:212 Control solver stopped due to sample limit: Sample limit exceeded (custom): Max steps limit of 1 reached.
 =========================== short test summary info ============================
 PASSED tests/test_defer_to_resample_bug.py::test_fixed_branch_executes_chosen_resample_once
-SKIPPED [1] tests/test_defer_to_resample_bug.py:198: set DEMO_TARGET=stock
-========================= 1 passed, 1 skipped in 8.49s =========================
+SKIPPED [1] tests/test_defer_to_resample_bug.py:202: set DEMO_TARGET=stock
+========================= 1 passed, 1 skipped in 8.35s =========================
 
 # pytest exit code: 0

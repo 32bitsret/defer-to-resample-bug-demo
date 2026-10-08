@@ -2,3 +2,6 @@
 __pycache__/
 logs/
 *.eval
+
+# Keep the Inspect evidence logs (see README "Inspect logs").
+!evidence/**/*.eval
