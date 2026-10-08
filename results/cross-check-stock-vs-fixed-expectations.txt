@@ -1,0 +1,82 @@
+# cross-check: stock 20.0.1 venv, DEMO_TARGET=fixed (expected to FAIL)
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.15, pytest-8.3.3, pluggy-1.6.0 -- /workspace/defer-to-resample-bug-demo/.venv-stock/bin/python
+rootdir: /workspace/defer-to-resample-bug-demo
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.15.1, platformdirs-4.12.4, typeguard-4.6.0, langsmith-0.14.4
+collecting ... collected 2 items
+
+tests/test_defer_to_resample_bug.py::test_stock_20_0_1_drops_chosen_resample SKIPPED
+tests/test_defer_to_resample_bug.py::test_fixed_branch_executes_chosen_resample_once Running 1 tasks...
+---------------------------------------------------------               
+dtr_bug_demo_defer_to_resample_honest_40918f80 (1 sample): mockllm/model
+max_tool_output: 1048576, token_limit: 1000000, dataset: (samples)      
+---------------------------------------------------------               
+                                                                        
+[10/08/26 14:15:06] WARNING  sample=demo                  _control_solver.py:212
+                             Control solver stopped due                         
+                             to sample limit: Sample                            
+                             limit exceeded (custom): Max                       
+                             steps limit of 1 reached.                          
+control_s... | Steps:   1/1 100% | Samples:   1/  1 | accuracy: 1.00 | mockllm:  0/20 | HTTP retries: 0
+
+---------------------------------------------------------                       
+dtr_bug_demo_defer_to_resample_honest_40918f80 (1 sample): mockllm/model        
+max_tool_output: 1048576, token_limit: 1000000, dataset: (samples)              
+                                                                                
+total time:                                   0:00:01                           
+noop_scorer                                                                     
+accuracy     1.000                                                              
+Log:                                                                            
+../../tmp/pytest-of-box/pytest-16/test_fixed_branch_executes_cho0/2026-10-08T12…
+---------------------------------------------------------                       
+                                                                                
+
+===== DEMO SUMMARY =====
+control-arena: 20.0.1 from PyPI
+inspect-ai: 0.3.257
+untrusted proposals (in order): ['FLAGGED_ACTION', 'RESAMPLED_ACTION']
+trusted proposals: []
+actions in message history: []
+actions executed (tool results): []
+steps used (StepCounter): 1
+max_steps: 1
+sample ended by: Sample limit exceeded (custom): Max steps limit of 1 reached.
+final transcript roles: ['system', 'user']
+===== END SUMMARY =====
+FAILED
+
+=================================== FAILURES ===================================
+_______________ test_fixed_branch_executes_chosen_resample_once ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-box/pytest-16/test_fixed_branch_executes_cho0')
+
+    @pytest.mark.anyio
+    @pytest.mark.skipif(TARGET != "fixed", reason="set DEMO_TARGET=fixed")
+    async def test_fixed_branch_executes_chosen_resample_once(tmp_path):
+        r = await _run_demo(tmp_path)
+        assert r["untrusted proposals (in order)"] == [FLAGGED, RESAMPLED]
+        assert r["trusted proposals"] == []
+        # FIX: the chosen resample is appended and executed exactly once.
+>       assert r["actions in message history"] == [RESAMPLED]
+E       AssertionError: assert [] == ['RESAMPLED_ACTION']
+E         
+E         Right contains one more item: 'RESAMPLED_ACTION'
+E         
+E         Full diff:
+E         + []
+E         - [
+E         -     'RESAMPLED_ACTION',
+E         - ]
+
+tests/test_defer_to_resample_bug.py:220: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  control_arena._control_solver:_control_solver.py:212 Control solver stopped due to sample limit: Sample limit exceeded (custom): Max steps limit of 1 reached.
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_defer_to_resample_bug.py:198: set DEMO_TARGET=stock
+FAILED tests/test_defer_to_resample_bug.py::test_fixed_branch_executes_chosen_resample_once
+========================= 1 failed, 1 skipped in 3.73s =========================
+
+# pytest exit code: 1
